@@ -58,23 +58,6 @@ public class Schnorr {
         this.V = this.V.modInverse(this.P);
     }
 
-    public BigInteger[] generateSignature(String M) {
-        BigInteger r = new BigInteger(this.numberOfBitsNumberQ - 2, new Random());
-        BigInteger X = this.H.modPow(r, this.P);
-        try {
-            MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-            String mx = M + X;
-            sha256.digest(mx.getBytes());
-            BigInteger s1 = new BigInteger(1, sha256.digest());
-            BigInteger s2 = r.add(this.A.multiply(s1)).mod(this.Q);
-            BigInteger[] sign = new BigInteger[2];
-            sign[0] = s1;
-            sign[1] = s2;
-            return sign;
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public BigInteger[] generateSignature(byte[] M) {
         BigInteger r = new BigInteger(this.numberOfBitsNumberQ - 2, new Random());
